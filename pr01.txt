@@ -1,0 +1,112 @@
+Java (JDK 17) Installation and Environment Setup
+1. Download JDK 17
+Download JDK 17 from:
+Oracle JDK Downloads
+Eclipse Adoptium
+Select:
+Windows
+x64
+JDK 17 (LTS)
+2. Install JDK
+Run the installer
+Click Next → Install → Finish
+java -version
+4. Set JAVA_HOME
+
+Open:
+
+Environment Variables
+
+Under System Variables:
+
+Click New
+Variable Name
+JAVA_HOME
+Variable Value
+C:\Program Files\Java\jdk-17
+5. Add Java to Path
+
+Edit Path variable and add:
+
+%JAVA_HOME%\bin
+
+Maven Installation and Environment Setup
+1. Download Maven
+
+Download from:
+
+Apache Maven Download Page
+
+Download:
+Binary zip archive
+2. Extract ZIP File
+Right-click ZIP
+Click Extract All
+3. Move Maven Folder
+
+Move extracted folder to:
+
+C:\Program Files\
+
+Example:
+
+C:\Program Files\apache-maven-3.9.11
+4. Set MAVEN_HOME
+
+Under System Variables:
+
+Click New
+Variable Name
+MAVEN_HOME
+Variable Value
+C:\Program Files\apache-maven-3.9.11
+5. Add Maven to Path
+
+Edit Path variable and add:
+
+%MAVEN_HOME%\bin
+6. Verify Maven Installation
+mvn -version
+Gradle Installation and Environment Setup
+1. Download Gradle
+
+Download from:
+
+Gradle Download Page
+
+Download:
+
+Binary-only ZIP
+2. Extract ZIP File
+Right-click ZIP
+Click Extract All
+3. Move Gradle Folder
+
+Move extracted folder to:
+
+C:\Program Files\
+
+Example:
+
+C:\Program Files\gradle-8.14
+4. Set GRADLE_HOME
+
+Under System Variables:
+
+Click New
+Variable Name
+GRADLE_HOME
+Variable Value
+C:\Program Files\gradle-8.14
+5. Add Gradle to Path
+
+Edit Path variable and add:
+
+%GRADLE_HOME%\bin
+6. Verify Gradle Installation
+gradle -version
+Final Verification Commands
+java -version
+javac -version
+mvn -version
+gradle -version

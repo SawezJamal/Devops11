@@ -1,0 +1,280 @@
+Program 6 — Continuous Integration with Jenkins
+
+This program demonstrates:
+
+Setting up CI Pipeline in Jenkins
+Integrating Jenkins with Maven/Gradle
+Running automated builds and tests
+Connecting Jenkins with GitHub
+Requirements
+
+Install and configure:
+
+JDK 17
+Maven or Gradle
+Git
+Jenkins
+STEP 1 — Verify Required Tools
+
+Open Command Prompt and verify:
+
+Java
+java -version
+javac -version
+Maven
+mvn -version
+Gradle (Optional)
+gradle -version
+Git
+git --version
+STEP 2 — Start Jenkins
+
+Open browser:
+
+http://localhost:8080
+
+or your custom port like:
+
+http://localhost:3030
+
+Login to Jenkins.
+
+STEP 3 — Install Jenkins Plugins
+
+On Jenkins Dashboard:
+
+Go to:
+
+Manage Jenkins
+
+↓
+
+Plugins
+
+↓
+
+Available Plugins
+
+Search and install:
+
+Plugin
+Git Plugin
+Maven Integration Plugin
+Gradle Plugin (optional)
+Pipeline Plugin
+
+Click:
+
+Install
+
+Restart Jenkins if required.
+
+STEP 4 — Create Sample Maven Project
+
+Open Command Prompt.
+
+Create folder:
+
+mkdir program6
+
+Move into folder:
+
+cd program6
+STEP 5 — Generate Maven Project
+
+Run:
+
+mvn archetype:generate -DgroupId=com.example -DartifactId=sample-ci-project -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+Move into project:
+
+cd sample-ci-project
+STEP 6 — Update App.java
+
+Navigate to:
+
+src/main/java/com/example/
+
+Open:
+
+App.java
+
+Replace with:
+
+package com.example;
+
+public class App {
+
+    public static void main(String[] args) {
+
+        System.out.println("Hello from Jenkins CI Pipeline");
+
+        int a = 5;
+        int b = 10;
+
+        System.out.println("Sum = " + (a + b));
+    }
+}
+
+Save file.
+
+STEP 7 — Build Maven Project Locally
+
+Run:
+
+mvn clean compile test package
+
+Ensure build succeeds.
+
+STEP 8 — Create GitHub Repository
+
+Open GitHub
+
+Create repository:
+
+sample-ci-project
+
+Do NOT initialize README.
+
+STEP 9 — Push Project to GitHub
+
+Inside project folder:
+
+Initialize Git:
+
+git init
+
+Add files:
+
+git add .
+
+Commit:
+
+git commit -m "Initial CI project"
+
+Add remote:
+
+git remote add origin <your-github-repo-url>
+
+Rename branch:
+
+git branch -M main
+
+Push project:
+
+git push -u origin main
+STEP 10 — Create Jenkins Job
+
+Open Jenkins Dashboard.
+
+Click:
+
+New Item
+
+Enter name:
+
+Maven-CI-Pipeline
+
+Select:
+
+Freestyle Project
+
+Click OK.
+
+STEP 11 — Configure GitHub Repository
+
+Under:
+
+Source Code Management
+
+Select:
+
+Git
+
+Paste GitHub repository URL.
+
+Example:
+
+https://github.com/username/sample-ci-project.git
+STEP 12 — Configure Branch
+
+Under:
+
+Branches to build
+
+Change:
+
+master
+
+to:
+
+main
+STEP 13 — Configure Build Trigger
+
+Enable:
+
+Poll SCM
+
+Schedule:
+
+H/5 * * * *
+
+Meaning:
+Poll repository every 5 minutes.
+
+STEP 14 — Configure Maven Build
+
+Under:
+
+Build
+
+Click:
+
+Add build step
+
+↓
+
+Invoke top-level Maven targets
+
+Goals:
+
+clean compile test package
+STEP 15 — Add Run Command
+
+Click:
+
+Add build step
+
+↓
+
+Execute Windows batch command
+
+Add:
+
+java -cp target/sample-ci-project-1.0-SNAPSHOT.jar com.example.App
+STEP 16 — Save Job
+
+Click:
+
+Save
+STEP 17 — Run Jenkins Build
+
+Click:
+
+Build Now
+STEP 18 — Verify Console Output
+
+Click build number →
+
+Console Output
+
+Confirm:
+
+GitHub code pulled successfully
+Maven build successful
+Tests executed
+JAR file created
+Java program executed
+Expected Output
+Hello from Jenkins CI Pipeline
+Sum = 15

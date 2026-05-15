@@ -1,0 +1,200 @@
+PART A — Remove Existing Jenkins (For Practice)
+
+Since you already installed Jenkins, remove old setup first.
+
+STEP 1 — Stop Jenkins Service
+
+Press:
+
+Windows + R
+
+Type:
+
+services.msc
+
+Press Enter.
+
+Find:
+
+Jenkins
+
+Right-click → Stop
+
+STEP 2 — Uninstall Jenkins
+
+Open:
+
+Control Panel
+
+Go to:
+
+Programs and Features
+
+Find:
+
+Jenkins
+
+Click:
+
+Uninstall
+
+Follow uninstall steps.
+
+STEP 3 — Delete Remaining Jenkins Folder
+
+Delete folders if they exist:
+
+C:\Program Files\Jenkins
+
+and
+
+C:\ProgramData\Jenkins
+
+Also delete:
+
+C:\Users\<your-username>\.jenkins
+
+This removes old configuration.
+
+PART B — Fresh Jenkins Installation
+STEP 4 — Verify Java 21
+
+Jenkins requires Java 21.
+
+Open CMD:
+
+java -version
+
+You should see Java 21.
+
+If not:
+
+install JDK 21
+set JAVA_HOME to JDK 21
+STEP 5 — Download Jenkins
+
+Download from:
+
+Jenkins Official Website
+
+Choose:
+
+Windows Installer (.msi)
+STEP 6 — Run Jenkins Installer
+
+Open downloaded installer.
+
+Click:
+
+Next
+STEP 7 — Choose Service Account
+
+Select:
+
+Run service as LocalSystem
+
+Click Next.
+
+STEP 8 — Configure Port
+
+Default Jenkins port:
+
+8080
+
+But if port 8080 is already used, choose another port like:
+
+3030
+
+Click:
+
+Test Port
+
+Then click Next.
+
+STEP 9 — Select Java Path
+
+Browse and select JDK 21 path.
+
+Example:
+
+C:\Program Files\Java\jdk-21
+
+Click Next.
+
+STEP 10 — Install Jenkins
+
+Click:
+
+Install
+
+Allow administrator permissions if asked.
+
+Wait for installation to finish.
+
+STEP 11 — Open Jenkins in Browser
+
+Open browser:
+
+If using default port:
+
+http://localhost:8080
+
+If using custom port:
+
+http://localhost:3030
+PART C — First-Time Jenkins Setup
+STEP 12 — Unlock Jenkins
+
+Jenkins asks for administrator password.
+
+Password file location:
+
+C:\ProgramData\Jenkins\.jenkins\secrets\initialAdminPassword
+
+Open file using Notepad:
+
+notepad "C:\ProgramData\Jenkins\.jenkins\secrets\initialAdminPassword"
+
+Copy password.
+
+Paste into browser.
+
+Click:
+
+Continue
+STEP 13 — Install Suggested Plugins
+
+Click:
+
+Install Suggested Plugins
+
+Jenkins downloads required plugins automatically.
+
+Wait until installation finishes.
+
+STEP 14 — Create Admin User
+
+Fill:
+
+Username
+Password
+Full name
+Email
+
+Click:
+
+Save and Continue
+STEP 15 — Save Jenkins URL
+
+Click:
+
+Save and Finish
+
+Then click:
+
+Start using Jenkins
+STEP 16 — Jenkins Dashboard Opens
+
+You will see Jenkins Home Page.
+
+Installation complete successfully.

@@ -1,0 +1,274 @@
+Program 12 — Complete DevOps Pipeline (Step by Step)
+
+This program demonstrates
+
+Source Control using GitHub
+CICD using Azure DevOps
+Maven Build Automation
+Self-Hosted Agent Deployment
+Running Executable JAR File
+WHAT YOU NEED BEFORE STARTING
+
+Verify
+
+java -version
+mvn -version
+git --version
+
+Also ensure
+
+Azure self-hosted agent is Online
+GitHub account exists
+Azure DevOps account exists
+PART 1 — CREATE MAVEN PROJECT
+STEP 1 — Create Folder
+
+Open Command Prompt
+
+mkdir program12
+cd program12
+STEP 2 — Create Maven Project
+
+Run
+
+mvn archetypegenerate -DgroupId=com.example -DartifactId=DevOpsFinalProject -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+STEP 3 — Move Into Project
+cd DevOpsFinalProject
+STEP 4 — Update App.java
+
+Go to
+
+srcmainjavacomexample
+
+Open
+
+App.java
+
+Replace everything with
+
+package com.example;
+
+public class App {
+
+    public static void main(String[] args) {
+
+        System.out.println(Hello from DevOps Final Lab!);
+    }
+}
+
+Save file.
+
+STEP 5 — Update pom.xml
+
+Open
+
+notepad pom.xml
+
+Inside build section replaceadd
+
+build
+    plugins
+
+        plugin
+            groupIdorg.apache.maven.pluginsgroupId
+            artifactIdmaven-jar-pluginartifactId
+            version3.2.2version
+
+            configuration
+                archive
+                    manifest
+                        mainClasscom.example.AppmainClass
+                    manifest
+                archive
+            configuration
+
+        plugin
+
+    plugins
+build
+
+Save file.
+
+STEP 6 — Verify Project Locally
+
+Run
+
+mvn clean package
+
+Expected
+
+BUILD SUCCESS
+STEP 7 — Test JAR File
+
+Run
+
+java -jar targetDevOpsFinalProject-1.0-SNAPSHOT.jar
+
+Expected output
+
+Hello from DevOps Final Lab!
+PART 2 — PUSH PROJECT TO GITHUB
+STEP 8 — Create GitHub Repository
+
+Open
+
+GitHub
+
+Create repository
+
+DevOpsFinalProject
+STEP 9 — Push Project to GitHub
+
+Inside project folder
+
+git init
+git add .
+git commit -m Initial DevOps final project
+
+Add remote
+
+git remote add origin httpsgithub.comyour-usernameDevOpsFinalProject.git
+
+Push
+
+git branch -M main
+git push -u origin main
+PART 3 — CREATE AZURE DEVOPS PROJECT
+STEP 10 — Open Azure DevOps
+
+Open
+
+Azure DevOps Portal
+
+STEP 11 — Create New Project
+
+Click
+
+New Project
+
+Project name
+
+DevOpsFinalProject
+
+Visibility
+
+Private
+
+Click
+
+Create
+PART 4 — VERIFY SELF-HOSTED AGENT
+STEP 12 — Check Agent Status
+
+Go to
+
+Organization Settings
+
+↓
+
+Agent Pools
+
+Verify
+
+MyLocalPool exists
+agent status is
+Online
+PART 5 — CREATE PIPELINE
+STEP 13 — Create Pipeline
+
+Go to
+
+Pipelines
+
+↓
+
+New Pipeline
+STEP 14 — Choose GitHub
+
+Select
+
+GitHub
+
+Authorize if needed.
+
+Choose repository
+
+DevOpsFinalProject
+STEP 15 — Choose Starter Pipeline
+
+Select
+
+Starter Pipeline
+STEP 16 — Replace YAML
+
+Delete existing YAML.
+
+Paste EXACTLY this
+
+trigger
+- main
+
+pool
+  name 'MyLocalPool'
+
+steps
+
+- task Maven@3
+  inputs
+    mavenPomFile 'pom.xml'
+    goals 'clean package'
+
+- script 
+    echo Simulating deployment...
+    mkdir deployed
+    copy target.jar deployed
+    echo Deployment successful!
+  displayName 'Simulate Deployment'
+
+- script 
+    echo Running the JAR file...
+    java -jar deployed.jar
+  displayName 'Run Application'
+STEP 17 — Save and Run Pipeline
+
+Click
+
+Save and Run
+
+Then
+
+Run
+
+Pipeline starts.
+
+PART 6 — VERIFY OUTPUT
+STEP 18 — Monitor Pipeline Logs
+
+Check
+
+Maven build
+deployment simulation
+JAR execution
+STEP 19 — Verify Final Output
+
+You should see
+
+Simulating deployment...
+Deployment successful!
+Running the JAR file...
+Hello from DevOps Final Lab!
+STEP 20 — Verify deployed Folder
+
+Open
+
+Cazureagent_work
+
+Open latest numbered folder →
+
+s
+
+↓
+
+deployed
+
+Verify .jar file exists.

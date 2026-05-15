@@ -1,0 +1,341 @@
+Program 10 — Azure Pipelines with Self-Hosted Agent (Clean Correct Steps)
+
+We will do this from scratch in the safest order.
+
+WHAT YOU NEED BEFORE STARTING
+
+Verify these work first:
+
+java -version
+mvn -version
+git --version
+
+Also:
+
+GitHub account
+Azure DevOps account
+PART 1 — CREATE MAVEN PROJECT
+STEP 1 — Create Folder
+
+Open Command Prompt:
+
+mkdir program10
+cd program10
+STEP 2 — Generate Maven Project
+
+Run:
+
+mvn archetype:generate -DgroupId=com.example -DartifactId=azure-pipeline-project -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+STEP 3 — Move Into Project
+cd azure-pipeline-project
+STEP 4 — Replace App.java
+
+Go to:
+
+src/main/java/com/example/
+
+Open App.java.
+
+Replace with:
+
+package com.example;
+
+public class App {
+
+    public static void main(String[] args) {
+
+        System.out.println("Azure Pipeline CI/CD Project");
+
+        int a = 5;
+        int b = 10;
+
+        System.out.println("Sum = " + (a + b));
+    }
+}
+
+Save file.
+
+STEP 5 — Test Project Locally
+
+Run:
+
+mvn clean test
+
+Expected:
+
+BUILD SUCCESS
+PART 2 — PUSH PROJECT TO GITHUB
+STEP 6 — Create GitHub Repository
+
+Open:
+
+GitHub
+
+Create repository:
+
+azure-pipeline-project
+
+Do NOT add README.
+
+STEP 7 — Push Project to GitHub
+
+Inside project folder:
+
+git init
+git add .
+git commit -m "Initial commit"
+
+Add GitHub repo:
+
+git remote add origin https://github.com/<your-username>/azure-pipeline-project.git
+
+Push:
+
+git branch -M main
+git push -u origin main
+PART 3 — CREATE AZURE DEVOPS PROJECT
+STEP 8 — Open Azure DevOps
+
+Open:
+
+Azure DevOps Portal
+
+STEP 9 — Create Project
+
+Click:
+
+New Project
+
+Enter:
+
+Field	Value
+Project Name	Lab-program-10
+Visibility	Private
+
+Click:
+
+Create
+PART 4 — CREATE SELF-HOSTED AGENT
+STEP 10 — Create Agent Pool
+
+Go to:
+
+Project Settings
+
+↓
+
+Agent Pools
+
+↓
+
+Add Pool
+
+Select:
+
+Self-hosted
+
+Pool name:
+
+MyLocalPool
+
+Click Create.
+
+STEP 11 — Download Agent
+
+Open created pool.
+
+Click:
+
+New Agent
+
+Choose:
+
+Windows
+
+Download ZIP.
+
+STEP 12 — Extract Agent
+
+Extract ZIP to:
+
+C:\azureagent
+PART 5 — CREATE PAT TOKEN
+STEP 13 — Create PAT
+
+In Azure DevOps:
+
+Click profile icon →
+
+Personal Access Tokens
+
+↓
+
+New Token
+STEP 14 — PAT Settings
+
+Use:
+
+Field	Value
+Name	MyAgentToken
+Expiration	90 days
+Access	Full access
+
+Click:
+
+Create
+
+Copy token immediately.
+
+PART 6 — CONFIGURE AGENT
+STEP 15 — Open Administrator CMD
+
+VERY IMPORTANT:
+Run CMD as Administrator.
+
+STEP 16 — Navigate to Agent Folder
+cd C:\azureagent
+STEP 17 — Start Configuration
+
+Run:
+
+config.cmd
+STEP 18 — Enter Details Carefully
+Server URL
+
+Example:
+
+https://dev.azure.com/Vtu-Devops-org
+
+Use YOUR organization name.
+
+Authentication Type
+PAT
+Paste PAT Token
+
+Paste copied token.
+
+Agent Pool
+MyLocalPool
+Agent Name
+
+Example:
+
+Azure-agent
+Run Agent as Service?
+
+Type:
+
+Y
+Enable SERVICE_SID_TYPE_UNRESTRICTED?
+
+Type:
+
+Y
+User Account for Service
+
+Just press:
+
+Enter
+
+DO NOT type anything.
+
+STEP 19 — Start Agent
+
+Run:
+
+run.cmd
+
+SUCCESS message:
+
+Listening for Jobs
+
+Now agent is working.
+
+PART 7 — CREATE AZURE PIPELINE
+STEP 20 — Create Pipeline
+
+Go to:
+
+Pipelines
+
+↓
+
+New Pipeline
+STEP 21 — Choose GitHub
+
+Select:
+
+GitHub
+
+Authorize if asked.
+
+Select repository:
+
+azure-pipeline-project
+STEP 22 — Choose Starter Pipeline
+
+Select:
+
+Starter Pipeline
+STEP 23 — Replace YAML
+
+Delete existing YAML.
+
+Paste:
+
+trigger:
+- main
+
+pool:
+  name: 'MyLocalPool'
+
+steps:
+
+- checkout: self
+  displayName: 'Checkout Code from GitHub'
+
+- script: mvn clean test
+  displayName: 'Build and Run Unit Tests'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/target/surefire-reports/TEST-*.xml'
+    testResultsFormat: 'JUnit'
+    failTaskOnMissingResultsFile: true
+  displayName: 'Publish Maven Test Results'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'target'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: 'Publish Build Artifacts'
+STEP 24 — Run Pipeline
+
+Click:
+
+Run
+STEP 25 — Verify Build
+
+Check:
+
+source code checkout
+Maven build
+unit tests
+artifacts
+STEP 26 — View Test Reports
+
+Go to:
+
+Pipelines → Runs
+
+Open latest run.
+
+Click:
+
+Tests
+
+View:
+
+passed tests
+failed tests

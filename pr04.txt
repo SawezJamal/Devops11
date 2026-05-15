@@ -1,0 +1,235 @@
+PART A — Create and Run Maven Project
+STEP 1 — Create Project Folder
+
+Open Command Prompt:
+
+mkdir program4
+
+Move into folder:
+
+cd program4
+STEP 2 — Generate Maven Project
+
+Run:
+
+mvn archetype:generate -DgroupId=com.example -DartifactId=maven-example -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+This creates Maven project:
+
+maven-example
+STEP 3 — Navigate to Project Folder
+cd maven-example
+STEP 4 — Open pom.xml
+
+Run:
+
+notepad pom.xml
+
+Replace code with:
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>maven-example</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <plugins>
+
+            <plugin>
+
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>
+
+Save file.
+
+STEP 5 — Open App.java
+
+Navigate to:
+
+src/main/java/com/example/
+
+Open:
+
+App.java
+
+Replace code with:
+
+package com.example;
+
+public class App {
+
+    public static void main(String[] args) {
+
+        System.out.println("Hello, Maven");
+        System.out.println("This is the simple realworld example....");
+
+        int a = 5;
+        int b = 10;
+
+        System.out.println(
+            "Sum of " + a + " and " + b + " is " + sum(a, b)
+        );
+    }
+
+    public static int sum(int x, int y) {
+        return x + y;
+    }
+}
+
+Save file.
+
+STEP 6 — Build Maven Project
+
+Make sure CMD is inside:
+
+maven-example
+
+Run:
+
+mvn clean install
+
+Expected:
+
+BUILD SUCCESS
+STEP 7 — Run Maven Project
+
+Run:
+
+mvn exec:java -Dexec.mainClass="com.example.App"
+
+Expected Output:
+
+Hello, Maven
+This is the simple realworld example....
+Sum of 5 and 10 is 15
+PART B — Migrate Maven Project to Gradle
+STEP 8 — Initialize Gradle
+
+Inside same project folder:
+
+gradle init
+
+Gradle asks questions.
+
+STEP 9 — Provide Inputs
+Found a Maven build. Generate a Gradle build?
+
+Type:
+
+yes
+Build Script DSL
+
+Choose:
+
+2
+
+Meaning:
+
+Groovy
+New APIs Behavior
+
+Type:
+
+no
+
+Gradle files get generated.
+
+STEP 10 — Open build.gradle
+
+Open:
+
+notepad build.gradle
+
+Replace code with:
+
+plugins {
+    id 'java'
+}
+
+group = 'com.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.12'
+}
+
+task run(type: JavaExec) {
+
+    main = 'com.example.App'
+
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+Save file.
+
+STEP 11 — Build Gradle Project
+
+Run:
+
+gradlew build
+
+Expected:
+
+BUILD SUCCESSFUL
+STEP 12 — Run Gradle Project
+
+Run:
+
+gradlew run
+
+Expected Output:
+
+Hello, Maven
+This is the simple realworld example....
+Sum of 5 and 10 is 15
+STEP 13 — Verify Migration
+
+Both Maven and Gradle outputs should match.
+
+Maven Output
+Hello, Maven
+This is the simple realworld example....
+Sum of 5 and 10 is 15
+Gradle Output
+Hello, Maven
+This is the simple realworld example....
+Sum of 5 and 10 is 15

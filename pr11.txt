@@ -1,0 +1,17 @@
+**same as 10th , but after that**
+
+STEP 9 — Verify Deployment Folder
+
+After success, open:
+
+C:\azureagent\_work\1\s\
+
+Look for folder:
+
+deployed
+
+Inside it you should see:
+
+release-pipeline-project-1.0-SNAPSHOT.jar
+
+That confirms simulated deployment worked successfully.

@@ -1,0 +1,126 @@
+Program 9 — Introduction to Azure DevOps
+
+This program covers:
+
+Overview of Azure DevOps Services
+Creating Azure DevOps Account
+Creating Organization
+Creating Project
+What is Azure DevOps?
+
+Azure DevOps is a cloud-based DevOps platform provided by Microsoft.
+
+It supports:
+
+Software Development Lifecycle (SDLC)
+Continuous Integration (CI)
+Continuous Delivery (CD)
+Project Management
+Source Code Management
+Automated Testing
+Azure DevOps Services
+Service	Purpose
+Azure Repos	Git repositories
+Azure Pipelines	CI/CD automation
+Azure Boards	Agile project management
+Azure Test Plans	Manual and exploratory testing
+Azure Artifacts	Package management
+Collaboration Tools	Wikis, Dashboards, Discussions
+STEP 1 — Open Azure DevOps Portal
+
+Open browser and visit:
+
+Azure DevOps Portal
+
+STEP 2 — Sign In
+
+Click:
+
+Sign In
+
+Use your Microsoft account.
+
+Example:
+
+Outlook
+Hotmail
+Microsoft email
+STEP 3 — Create Microsoft Account (If Needed)
+
+If you do not have an account:
+
+Click:
+
+Create one
+
+Complete:
+
+Email
+Password
+Verification
+
+Then sign in.
+
+STEP 4 — Create Azure DevOps Organization
+
+On first login, Azure DevOps asks to create organization.
+
+Click:
+
+New organization
+STEP 5 — Enter Organization Details
+Organization Name
+
+Example:
+
+Vtu-Devops-org
+Location
+
+Choose nearest region.
+
+Example:
+
+South India
+STEP 6 — Continue
+
+Click:
+
+Continue
+
+Organization gets created.
+
+STEP 7 — Create New Project
+
+After organization creation, dashboard opens.
+
+Click:
+
+New Project
+STEP 8 — Enter Project Details
+Project Name
+MyFirstDevOpsProject
+Description
+This is my first Azure DevOps lab project
+Visibility
+
+Choose:
+
+Private
+STEP 9 — Create Project
+
+Click:
+
+Create
+
+Project dashboard opens successfully.
+
+STEP 10 — Explore Azure DevOps Services
+
+Left sidebar contains services:
+
+Service	Purpose
+Boards	Task management
+Repos	Source code
+Pipelines	Build & deployment
+Test Plans	Testing
+Artifacts	Package storage

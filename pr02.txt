@@ -1,0 +1,364 @@
+STEP 1 — Create Separate Folder
+
+Open Command Prompt.
+
+Create a new folder:
+
+mkdir program2
+
+Move into the folder:
+
+cd program2
+STEP 2 — Create Maven Project
+
+Run this command:
+
+mvn archetype:generate -DgroupId=com.example -DartifactId=myapp -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+Meaning of Parameters
+Parameter	Meaning
+groupId	Company/package name
+artifactId	Project name
+archetypeArtifactId	Project template
+interactiveMode=false	Skips manual questions
+STEP 3 — Navigate to Project Folder
+
+Move into generated project:
+
+cd myapp
+STEP 4 — Open pom.xml
+
+Open pom.xml in Notepad:
+
+notepad pom.xml
+
+Replace existing code with:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>myapp</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+
+        <!-- JUnit Dependency -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- Maven Surefire Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+
+                <configuration>
+                    <redirectTestOutputToFile>false</redirectTestOutputToFile>
+                    <useSystemOut>true</useSystemOut>
+                </configuration>
+
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
+
+Save and close the file.
+
+STEP 5 — Open App.java
+
+Navigate to:
+
+src/main/java/com/example/
+
+Open:
+
+App.java
+
+Replace code with:
+
+package com.example;
+
+public class App {
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public static void main(String[] args) {
+
+        App app = new App();
+
+        int result = app.add(2, 3);
+
+        System.out.println("2 + 3 = " + result);
+
+        System.out.println("Application executed successfully!");
+    }
+}
+
+Save file.
+
+STEP 6 — Open AppTest.java
+
+Navigate to:
+
+src/test/java/com/example/
+
+Open:
+
+AppTest.java
+
+Replace code with:
+
+package com.example;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+public class AppTest {
+
+    @Test
+    public void testAdd() {
+
+        App app = new App();
+
+        int result = app.add(2, 3);
+
+        System.out.println("Running test: 2 + 3 = " + result);
+
+        Assert.assertEquals(5, result);
+    }
+}
+
+Save file.
+
+STEP 7 — Compile Project
+
+Make sure CMD is inside myapp folder.
+
+Run:
+
+mvn compile
+
+This compiles Java source code.
+
+STEP 8 — Run Unit Tests
+
+Run:
+
+mvn test
+
+This executes AppTest.java.
+
+Expected output:
+
+Running test: 2 + 3 = 5
+STEP 9 — Package Project into JAR
+
+Run:
+
+mvn package
+
+Maven creates a JAR file inside:
+
+target/
+
+Example:
+
+target/myapp-1.0-SNAPSHOT.jar
+STEP 10 — Run Application
+
+Run:
+
+java -cp target/myapp-1.0-SNAPSHOT.jar com.example.App
+Expected Output
+2 + 3 = 5
+Application executed successfully!
+
+Maven Web Application — Step by Step
+
+This program creates a simple Maven Web Application using JSP and Embedded Tomcat.
+
+STEP 1 — Create Separate Folder
+
+Open Command Prompt.
+
+Create project folder:
+
+mkdir program3
+
+Move into folder:
+
+cd program3
+STEP 2 — Generate Maven Web Project
+
+Run this command:
+
+mvn archetype:generate -DgroupId=com.example -DartifactId=StudentRegistrationApp -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+
+This creates a Maven Web Application project.
+
+STEP 3 — Navigate to Project Folder
+cd StudentRegistrationApp
+STEP 4 — Understand Project Structure
+
+Project structure:
+
+StudentRegistrationApp
+│── src
+│   ├── main
+│   │   ├── java
+│   │   ├── resources
+│   │   ├── webapp
+│   │   │    ├── WEB-INF
+│   │   │    │    └── web.xml
+│   │   │    └── index.jsp
+│── pom.xml
+Important Folders
+Folder/File	Purpose
+src/main/java	Java source files
+src/main/webapp	JSP, HTML, CSS, JS
+WEB-INF	Configuration files
+pom.xml	Dependencies and plugins
+STEP 5 — Open pom.xml
+
+Open:
+
+notepad pom.xml
+
+Replace existing content with:
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>StudentRegistrationApp</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <packaging>war</packaging>
+
+    <build>
+        <plugins>
+
+            <!-- Tomcat Plugin -->
+
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+
+                <configuration>
+                    <port>8080</port>
+                    <path>/</path>
+                </configuration>
+
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
+
+Save and close file.
+
+STEP 6 — Create index.jsp
+
+Navigate to:
+
+src/main/webapp/
+
+Create or open:
+
+index.jsp
+
+Paste this code:
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Student Registration Form</title>
+</head>
+
+<body>
+
+    <h2>Student Registration Form</h2>
+
+    <form>
+
+        Name:
+        <input type="text" name="name">
+        <br><br>
+
+        Email:
+        <input type="email" name="email">
+        <br><br>
+
+        Course:
+        <input type="text" name="course">
+        <br><br>
+
+        <input type="submit" value="Register">
+
+    </form>
+
+</body>
+</html>
+
+Save file.
+
+STEP 7 — Compile the Project
+
+Run:
+
+mvn compile
+
+This compiles the project.
+
+STEP 8 — Package the Project
+
+Run:
+
+mvn package
+
+This creates a WAR file inside:
+
+target/
+
+Example:
+
+StudentRegistrationApp-1.0-SNAPSHOT.war
+STEP 9 — Run Embedded Tomcat
+
+Run:
+
+mvn tomcat7:run
+
+Tomcat server starts on port 8080.
+
+STEP 10 — Open Browser
+
+Visit:
+
+http://localhost:8080/index.jsp
+
+You should see the Student Registration Form.

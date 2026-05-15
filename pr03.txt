@@ -1,0 +1,148 @@
+Program 3 — Working with Gradle Project (Groovy DSL)
+
+Source:
+
+STEP 1 — Create Project Folder
+
+Open Command Prompt:
+
+mkdir gradleProgram
+cd gradleProgram
+STEP 2 — Initialize Gradle Project
+
+Run:
+
+gradle init --type java-application
+
+Provide inputs:
+
+Question	Answer
+Java Version	17
+Project Name	gradleProject
+Application Structure	1
+Build Script DSL	2 (Groovy)
+Test Framework	1 (JUnit 4)
+New APIs Behavior	no
+STEP 3 — Project Structure
+gradleProject/
+ ├── app/
+ │    ├── build.gradle
+ │    └── src/
+ │         ├── main/java/org/example/
+ │         │      └── App.java
+ │         └── test/java/org/example/
+ │                └── AppTest.java
+STEP 4 — Update App.java
+
+Open:
+
+app/src/main/java/org/example/App.java
+
+Replace code with:
+
+package org.example;
+
+public class App {
+
+    public static void main(String[] args) {
+
+        double num1 = 5;
+        double num2 = 10;
+
+        double sum = num1 + num2;
+
+        System.out.printf(
+            "The sum of %.2f and %.2f is %.2f%n",
+            num1,
+            num2,
+            sum
+        );
+    }
+}
+
+Save file.
+
+STEP 5 — Update build.gradle
+
+Open:
+
+notepad app\build.gradle
+
+Replace with:
+
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+}
+
+application {
+    mainClass = 'org.example.App'
+}
+
+Save file.
+
+STEP 6 — Update AppTest.java
+
+Open:
+
+notepad app\src\test\java\org\example\AppTest.java
+
+Replace with:
+
+package org.example;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class AppTest {
+
+    @Test
+    public void testAddition() {
+
+        double num1 = 5;
+        double num2 = 10;
+
+        double expectedSum = 15;
+
+        double actualSum = num1 + num2;
+
+        assertEquals(expectedSum, actualSum, 0.01);
+    }
+}
+
+Save file.
+
+STEP 7 — Build Project
+
+Run:
+
+gradle build
+
+Expected:
+
+BUILD SUCCESSFUL
+STEP 8 — Run Project
+
+Run:
+
+gradle run
+
+Expected Output:
+
+The sum of 5.00 and 10.00 is 15.00
+STEP 9 — Run Tests
+
+Run:
+
+gradle test
+
+Expected:
+
+BUILD SUCCESSFUL
