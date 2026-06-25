@@ -1,0 +1,83 @@
+Scenario 1: You already have the project folder (copied from USB/ZIP)
+
+Initialize Git and connect it to GitHub.
+
+cd path/to/project
+
+git init
+
+git add .
+
+git commit -m "Initial commit"
+
+git branch -M main
+
+git remote add origin https://github.com/<your-username>/<repository>.git
+
+git push -u origin main
+
+You only need to run git remote add origin once for that repository.
+
+Verify the remote:
+
+git remote -v
+
+Example output:
+
+origin  https://github.com/sawezjamal/DevOpsProgram.git (fetch)
+origin  https://github.com/sawezjamal/DevOpsProgram.git (push)
+
+After that, future pushes are simply:
+
+git push
+Scenario 2: Fresh system with nothing downloaded (Recommended)
+
+Clone the repository instead of creating it again.
+
+git clone https://github.com/<your-username>/<repository>.git
+
+Example:
+
+git clone https://github.com/sawezjamal/DevOpsProgram.git
+
+Then:
+
+cd DevOpsProgram
+
+Make changes and push:
+
+git add .
+git commit -m "Updated Program 8"
+git push
+
+Notice that you do not need git remote add origin because git clone sets it up automatically.
+
+Verify:
+
+git remote -v
+If origin already exists
+
+If you run:
+
+git remote add origin https://github.com/username/repo.git
+
+and get:
+
+error: remote origin already exists.
+
+Change it instead:
+
+git remote set-url origin https://github.com/username/repo.git
+
+or remove and add again:
+
+git remote remove origin
+git remote add origin https://github.com/username/repo.git
+For your VTU DevOps lab
+
+If the examiner gives you a new PC, the fastest workflow is:
+
+git clone https://github.com/<your-username>/DevOpsProgram.git
+cd DevOpsProgram
+
+This is the industry-standard approach and avoids having to set up origin manually.
