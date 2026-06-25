@@ -1,237 +1,123 @@
-Program 7 — Configuration Management with Ansible (Step by Step)
+Step 1: Install WSL on Windows
 
-This program demonstrates:
-
-Basics of Ansible
-Inventory files
-Playbooks
-Modules
-Automating package installation
-What is Configuration Management?
-
-Configuration Management means:
-
-automating system setup
-maintaining consistent configurations
-managing multiple servers efficiently
-What is Ansible?
-
-Ansible is an open-source automation tool used for:
-
-configuration management
-deployment
-task automation
-
-Uses:
-
-YAML playbooks
-inventory files
-modules
-Components of Ansible
-Component	Purpose
-Inventory	List of hosts
-Playbook	YAML automation file
-Modules	Perform tasks
-PART 1 — INSTALL WSL
-STEP 1 — Open PowerShell as Administrator
-
-Press:
-
-Windows key
-Search:
-PowerShell
-
-Right-click:
-
-Run as Administrator
-STEP 2 — Install WSL
-
-Run:
+Open PowerShell as Administrator and run:
 
 wsl --install
 
-Wait for installation.
+Restart the system if prompted.
 
-STEP 3 — Restart Computer
+Check available distributions:
 
-Restart Windows if asked.
+wsl --list --online
 
-PART 2 — INSTALL UBUNTU
-STEP 4 — Open Microsoft Store
+Install Ubuntu:
 
-Search:
+wsl --install Ubuntu-24.04
 
-Ubuntu 22.04 LTS
+After installation, restart the PC.
 
-Install it.
+Step 2: Launch Ubuntu
 
-STEP 5 — Open Ubuntu
+Open PowerShell and run:
 
-Launch Ubuntu from Start Menu.
+wsl
 
-First launch takes time.
+Create a Linux user account:
 
-STEP 6 — Create Linux Username & Password
+Enter new UNIX username: sawez
+New password: ********
 
-Ubuntu asks:
+Ubuntu terminal opens:
 
-UNIX username
-password
-
-Create them.
-
-Example:
-
-Username: sawez
-PART 3 — INSTALL ANSIBLE
-STEP 7 — Update Ubuntu Packages
-
-Inside Ubuntu terminal run:
-
-sudo apt update -y
-
-Enter Linux password if asked.
-
-STEP 8 — Install Ansible
-
-Run:
-
+sawez@hostname:~$
+Step 3: Update Ubuntu Packages
+sudo apt update
+sudo apt upgrade -y
+Step 4: Install Ansible
 sudo apt install ansible -y
 
-Wait for installation.
-
-STEP 9 — Verify Ansible
-
-Run:
+Verify installation:
 
 ansible --version
 
-You should see Ansible version details.
+Sample Output:
 
-PART 4 — CREATE ANSIBLE LAB
-STEP 10 — Create Working Directory
+ansible [core 2.x.x]
+python version = 3.x.x
+Step 5: Create Working Directory
+mkdir Program7
+cd Program7
+Step 6: Create Inventory File
 
-Run:
+Create inventory file:
 
-mkdir ansible-lab
+nano inventory.ini
 
-Then:
-
-cd ansible-lab
-PART 5 — CREATE INVENTORY FILE
-STEP 11 — Create inventory.ini
-
-Run:
-
-vi inventory.ini
-STEP 12 — Add Inventory Content
-
-Press:
-
-i
-
-to enter insert mode.
-
-Paste:
+Add:
 
 [local]
 localhost ansible_connection=local
-STEP 13 — Save and Exit
 
-Press:
+Save:
 
-Esc
+Ctrl + O
+Enter
+Ctrl + X
 
-Type:
+Verify:
 
-:wq
+cat inventory.ini
+Step 7: Test Connectivity Using Ping Module
 
-Press Enter.
-
-PART 6 — TEST CONNECTIVITY
-STEP 14 — Run Ping Test
-
-Run:
+Command:
 
 ansible all -i inventory.ini -m ping
-STEP 15 — Verify Output
 
-Expected:
+Output:
 
 localhost | SUCCESS => {
     "changed": false,
     "ping": "pong"
 }
+Step 8: Create Ansible Playbook
 
-This confirms Ansible communication works.
+Create playbook:
 
-PART 7 — CREATE PLAYBOOK
-STEP 16 — Create Playbook File
+nano playbook.yml
 
-Run:
-
-vi install_htop.yml
-STEP 17 — Add Playbook Content
-
-Press:
-
-i
-
-Paste:
+Add:
 
 ---
-- name: Install htop system monitor tool
-  hosts: local
-  become: true
+- name: First Playbook
+  hosts: all
 
   tasks:
+    - name: Display Message
+      debug:
+        msg: "Hello from Ansible"
 
-    - name: Install htop package
-      ansible.builtin.package:
-        name: htop
-        state: present
-STEP 18 — Save and Exit
+Save and exit.
 
-Press:
-
-Esc
-
-Type:
-
-:wq
-
-Press Enter.
-
-PART 8 — RUN PLAYBOOK
-STEP 19 — Execute Playbook
+Step 9: Execute Playbook
 
 Run:
 
-ansible-playbook -i inventory.ini install_htop.yml
-STEP 20 — Verify Playbook Output
+ansible-playbook -i inventory.ini playbook.yml
 
-Expected:
+Output:
 
-TASK [Install htop package]
-changed: [localhost]
+PLAY [First Playbook]
 
-This means:
+TASK [Display Message]
+ok: [localhost] => {
+    "msg": "Hello from Ansible"
+}
 
-playbook executed
-htop installed successfully
-PART 9 — VERIFY INSTALLATION
-STEP 21 — Run htop
-
-Run:
-
-htop
-
-Interactive system monitor opens.
-
-STEP 22 — Exit htop
-
-Press:
-
-q
-
-to quit.
+PLAY RECAP
+localhost : ok=1 changed=0 failed=0
+Important Commands
+ansible --version
+ansible all -i inventory.ini -m ping
+ansible-playbook -i inventory.ini playbook.yml
+cat inventory.ini
+cat playbook.yml

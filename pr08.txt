@@ -1,0 +1,303 @@
+Experiment 8: Jenkins CI Pipeline for a Maven Project + Ansible Deployment
+Prerequisites
+
+Install:
+
+JDK 17 (or the version required by your lab)
+Maven
+Git
+Jenkins (MSI installer)
+WSL Ubuntu
+Ansible
+
+Verify:
+
+java -version
+mvn -version
+git --version
+
+Ubuntu:
+
+ansible --version
+Step 1: Install Jenkins
+
+Download Jenkins LTS from:
+
+Jenkins Downloads
+
+During installation:
+
+Install as Windows Service
+Port: 8080
+Use LocalSystem account
+Select your JDK folder
+Install suggested plugins
+
+Open:
+
+http://localhost:8080
+
+Unlock Jenkins using:
+
+C:\ProgramData\Jenkins\.jenkins\secrets\initialAdminPassword
+Step 2: Install Required Plugins
+
+Go to
+
+Manage Jenkins
+→ Plugins
+
+Install:
+
+Git
+Maven Integration
+Ansible
+
+Restart Jenkins.
+
+Step 3: Configure JDK
+Manage Jenkins
+→ Tools
+
+JDK
+
+Name:
+JDK17
+
+Uncheck
+
+Install automatically
+
+Java Home
+
+C:\Program Files\Java\jdk-17
+
+Save.
+
+Step 4: Configure Maven
+
+Still under
+
+Manage Jenkins
+→ Tools
+
+Add Maven
+
+Name:
+Maven
+
+Either:
+
+Install Automatically
+
+OR
+
+Give Maven Home
+
+C:\apache-maven-3.9.x
+
+Save.
+
+Step 5: Prepare HelloMaven Project
+
+Create if not already present:
+
+mkdir HelloMaven
+cd HelloMaven
+
+mvn archetype:generate ^
+-DgroupId=com.example ^
+-DartifactId=HelloMaven ^
+-DarchetypeArtifactId=maven-archetype-quickstart ^
+-DinteractiveMode=false
+
+Build
+
+cd HelloMaven
+
+mvn clean package
+
+Expected
+
+BUILD SUCCESS
+Step 6: Push to GitHub
+git init
+
+git add .
+
+git commit -m "Initial Commit"
+
+git branch -M main
+
+git remote add origin https://github.com/<username>/HelloMaven.git
+
+git push -u origin main
+Step 7: Create Jenkins Job
+
+Dashboard
+
+New Item
+
+Name
+
+HelloMaven-CI
+
+Select
+
+Freestyle Project
+
+OK
+
+Step 8: Configure Git
+Source Code Management
+
+Git
+
+Repository URL
+
+https://github.com/<username>/HelloMaven.git
+
+Branch
+
+*/main
+Step 9: Configure Maven Build
+
+Scroll
+
+Build
+
+Add
+
+Invoke top-level Maven targets
+
+Goals
+
+clean package
+
+Leave POM blank.
+
+Step 10: Archive Artifact
+Post Build Actions
+
+Choose
+
+Archive the artifacts
+
+Files
+
+target/*.jar
+Step 11: Prepare Ansible
+
+Open Ubuntu
+
+Create directory
+
+mkdir ~/ansible-deploy
+
+cd ~/ansible-deploy
+
+Inventory
+
+nano hosts.ini
+[local]
+localhost ansible_connection=local
+
+Save.
+
+Create deployment directory
+
+sudo mkdir -p /opt/deployment
+
+sudo chmod 777 /opt/deployment
+Step 12: Create Playbook
+nano deploy.yml
+
+For Windows Jenkins, use the Windows workspace through /mnt/c. For example:
+
+---
+- name: Deploy Maven Artifact
+  hosts: local
+
+  tasks:
+    - name: Copy Maven artifact
+      copy:
+        src: "/mnt/c/ProgramData/Jenkins/.jenkins/workspace/HelloMaven-CI/target/HelloMaven-1.0-SNAPSHOT.jar"
+        dest: "/opt/deployment/HelloMaven.jar"
+
+If your Jenkins workspace is in a different location, replace the src path with the actual workspace path.
+
+Step 13: Test Playbook
+ansible-playbook -i hosts.ini deploy.yml
+
+Verify
+
+ls -l /opt/deployment
+
+Expected
+
+HelloMaven.jar
+Step 14: Configure Jenkins to Run Ansible
+
+Open
+
+HelloMaven-CI
+
+Configure
+
+Scroll
+
+Post Build Actions
+
+If using Windows, add:
+
+Execute Windows batch command
+
+Command
+
+wsl bash -c "cd ~/ansible-deploy && ansible-playbook -i hosts.ini deploy.yml"
+
+Save.
+
+Step 15: Execute Pipeline
+Build Now
+
+Console Output should show:
+
+Checking out from Git...
+
+↓
+
+Running Maven...
+
+↓
+
+BUILD SUCCESS
+
+↓
+
+Archiving Artifacts...
+
+↓
+
+Executing Ansible...
+
+↓
+
+TASK [Copy Maven artifact]
+
+↓
+
+PLAY RECAP
+
+↓
+
+Finished: SUCCESS
+Step 16: Verify Deployment
+
+Ubuntu
+
+ls -l /opt/deployment
+
+Output
+
+HelloMaven.jar
